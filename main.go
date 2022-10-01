@@ -18,6 +18,10 @@ type ShortenRequest struct {
 	Url string `json:"url"`
 }
 
+type ShortenResponse struct {
+	Url string `json:"url"`
+}
+
 func main() {
 	router := chi.NewRouter()
 	
@@ -51,7 +55,19 @@ func main() {
 
 		w.Header().Add("Access-Control-Allow-Origin", "*")
 
-		w.Write([]byte(fmt.Sprintf("http://%s/%s", r.Host, guid)))
+		response := &ShortenResponse{
+			Url: fmt.Sprintf("http://%s/%s", r.Host, guid),
+		}
+
+		responseJson, err := json.Marshal(response)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			fmt.Println(err)
+			return
+		} 
+
+		w.Write(responseJson)
 
 		router.Get(fmt.Sprintf("/%s", guid), func (w http.ResponseWriter, r *http.Request) {
 			HandleShortUrlRequest(w, r, request)		
