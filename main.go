@@ -55,6 +55,7 @@ func main() {
 
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 
 		response := &ShortenResponse{
 			Url: fmt.Sprintf("http://%s/%s", r.Host, guid),
