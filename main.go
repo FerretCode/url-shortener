@@ -53,22 +53,14 @@ func main() {
 
 		guid := uuid.New().String()[0:5]
 
-		w.Header().Add("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Content-Type", "application/json")
 
 		response := &ShortenResponse{
 			Url: fmt.Sprintf("http://%s/%s", r.Host, guid),
 		}
 
-		responseJson, err := json.Marshal(response)
-
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			fmt.Println(err)
-			return
-		}
-
-		fmt.Println(responseJson)
-		w.Write(responseJson)
+		json.NewEncoder(w).Encode(response)
 
 		router.Get(fmt.Sprintf("/%s", guid), func (w http.ResponseWriter, r *http.Request) {
 			HandleShortUrlRequest(w, r, request)		
