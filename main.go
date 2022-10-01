@@ -47,6 +47,8 @@ func main() {
 
 		guid := uuid.New().String()[0:5]
 
+		w.Header().Add("Access-Control-Allow-Origin", "*")
+
 		w.Write([]byte(fmt.Sprintf("http://%s/%s", r.Host, guid)))
 
 		router.Get(fmt.Sprintf("/%s", guid), func (w http.ResponseWriter, r *http.Request) {
