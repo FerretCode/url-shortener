@@ -31,6 +31,7 @@ func main() {
 
 		if err != nil {
 			http.Error(w, "There was an error shortening the URL.", http.StatusInternalServerError)
+			fmt.Println(err)
 			return
 		}
 
@@ -38,6 +39,7 @@ func main() {
 
 		if jsonErr := json.Unmarshal(body, request); jsonErr != nil {
 			http.Error(w, jsonErr.Error(), http.StatusInternalServerError)
+			fmt.Println(jsonErr)
 			return
 		}
 
@@ -68,6 +70,8 @@ func HandleShortUrlRequest(w http.ResponseWriter, r *http.Request, request *Shor
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		fmt.Println(err)
+		return
 	}
 
 	proxy.ServeHTTP(w, r)
