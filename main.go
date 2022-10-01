@@ -65,8 +65,9 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			fmt.Println(err)
 			return
-		} 
+		}
 
+		fmt.Println(responseJson)
 		w.Write(responseJson)
 
 		router.Get(fmt.Sprintf("/%s", guid), func (w http.ResponseWriter, r *http.Request) {
