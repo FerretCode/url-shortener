@@ -31,6 +31,8 @@ func main() {
 	router.Use(middleware.Recoverer)
 
 	router.Post("/shorten", func (w http.ResponseWriter, r *http.Request) {
+		fmt.Println("shorten req received")
+		
 		body, err := io.ReadAll(r.Body)
 
 		if err != nil {
